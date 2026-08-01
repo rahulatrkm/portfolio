@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rahul's Studio — apps, tools & games</title>
+<meta name="description" content="A collection of free web apps, developer tools and browser games — from an AI contract reviewer and a plain-language document explainer to voxel worlds and daily games. All free, no signup." />
+<meta name="theme-color" content="#0b1020" />
+<meta property="og:title" content="Rahul's Studio — apps, tools & games" />
+<meta property="og:description" content="Free web apps, tools and games — AI contract review, plain-language explainer, offline first-aid, voxel sandbox, and more." />
+<meta property="og:type" content="website" />
+<style>
+  :root{ --bg:#0b1020; --bg2:#0a0e1c; --card:#121a30; --line:#243050; --fg:#eaf0ff; --muted:#9aa8cc;
+    --a1:#6ea8ff; --a2:#a68bff; --a3:#39d98a; --a4:#ffb454; }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif; color:var(--fg); line-height:1.6;
+    background:radial-gradient(1200px 600px at 82% -10%,#1a2450 0,transparent 58%),radial-gradient(1000px 560px at 6% 0,#16203f 0,var(--bg) 55%); background-color:var(--bg); min-height:100vh}
+  .wrap{max-width:1040px; margin:0 auto; padding:46px 20px 90px}
+  header{text-align:center; margin-bottom:12px}
+  .kicker{display:inline-flex; gap:8px; align-items:center; font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; color:var(--a1);
+    border:1px solid var(--line); background:rgba(110,168,255,.07); padding:6px 13px; border-radius:999px}
+  h1{font-size:2.7rem; line-height:1.1; margin:.4em 0 .2em; letter-spacing:-1px}
+  h1 .g{background:linear-gradient(90deg,var(--a1),var(--a2)); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .sub{color:var(--muted); font-size:1.12rem; max-width:640px; margin:0 auto}
+  .links{display:flex; gap:12px; justify-content:center; margin-top:18px; flex-wrap:wrap}
+  .links a{color:var(--fg); text-decoration:none; border:1px solid var(--line); padding:9px 16px; border-radius:11px; font-size:.9rem; font-weight:600}
+  .links a:hover{border-color:var(--a1)}
+  .filters{display:flex; gap:8px; justify-content:center; margin:34px 0 20px; flex-wrap:wrap}
+  .chip{cursor:pointer; border:1px solid var(--line); background:transparent; color:var(--muted); padding:8px 15px; border-radius:999px; font-size:.86rem; font-weight:600}
+  .chip.on{background:linear-gradient(90deg,var(--a1),var(--a2)); border-color:transparent; color:#0b1020}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px}
+  .card{background:linear-gradient(180deg,var(--card),var(--bg2)); border:1px solid var(--line); border-radius:18px; padding:20px; display:flex; flex-direction:column; gap:10px;
+    text-decoration:none; color:var(--fg); transition:.15s; position:relative; overflow:hidden}
+  .card:hover{transform:translateY(-3px); border-color:var(--a1)}
+  .card .top{display:flex; align-items:center; gap:12px}
+  .card .emoji{font-size:2rem; width:52px; height:52px; display:flex; align-items:center; justify-content:center; background:#0d1428; border:1px solid var(--line); border-radius:13px; flex:0 0 auto}
+  .card h3{font-size:1.16rem}
+  .card .tag{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted)}
+  .card p{color:var(--muted); font-size:.92rem; flex:1}
+  .card .foot{display:flex; align-items:center; justify-content:space-between; margin-top:4px}
+  .badge{font-size:.7rem; padding:3px 9px; border-radius:999px; font-weight:700}
+  .badge.tool{background:rgba(110,168,255,.14); color:var(--a1)}
+  .badge.game{background:rgba(166,139,255,.16); color:var(--a2)}
+  .badge.ai{background:rgba(57,217,138,.14); color:var(--a3)}
+  .badge.util{background:rgba(255,180,84,.14); color:var(--a4)}
+  .card .go{font-size:.85rem; color:var(--a1); font-weight:700}
+  .src{position:absolute; top:14px; right:14px; color:var(--muted); font-size:.78rem; text-decoration:none; opacity:.7}
+  .src:hover{opacity:1; color:var(--fg)}
+  footer{text-align:center; color:var(--muted); font-size:.85rem; margin-top:44px; border-top:1px solid var(--line); padding-top:22px}
+  footer a{color:var(--a1)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="kicker">● Independent maker · everything free</span>
+    <h1>Things I've <span class="g">built</span></h1>
+    <p class="sub">A growing collection of free web apps, developer tools and browser games. No signup, no tracking — just open and use them.</p>
+    <div class="links">
+      <a href="https://github.com/rahulatrkm" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://dev.to/rahul_85ac39adcd5c87cfd93" target="_blank" rel="noopener">dev.to ↗</a>
+    </div>
+  </header>
+
+  <div class="filters" id="filters">
+    <button class="chip on" data-f="all">All</button>
+    <button class="chip" data-f="ai">AI</button>
+    <button class="chip" data-f="tool">Dev tools</button>
+    <button class="chip" data-f="util">Everyday</button>
+    <button class="chip" data-f="game">Games</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    Built by <a href="https://github.com/rahulatrkm" target="_blank" rel="noopener">@rahulatrkm</a>.
+    Everything here is free and open source. Backend apps may take ~30s to wake on first visit (free hosting).
+  </footer>
+</div>
+
+<script>
+"use strict";
+const PROJECTS = [
+  { name:"ClauseClear", emoji:"📄", cat:"ai", tag:"AI · Legal",
+    desc:"Paste a contract, lease, NDA or job offer and get the risky clauses explained in plain English — what's missing and what to push back on.",
+    url:"https://clauseclear.onrender.com", src:"https://github.com/rahulatrkm/clauseclear" },
+  { name:"Plainly", emoji:"🔤", cat:"ai", tag:"AI · Everyday",
+    desc:"Turn any confusing document or jargon — medical, legal, bank, government — into plain words at your reading level and language. Plus a scam/reality checker.",
+    url:"https://plainly-n6ni.onrender.com", src:"https://github.com/rahulatrkm/plainly" },
+  { name:"Lifeline", emoji:"✚", cat:"util", tag:"Health · Offline",
+    desc:"Calm, offline first-aid & emergency steps — choking, CPR, bleeding, stroke and more. Works with no internet. Installable on your phone.",
+    url:"https://rahulatrkm.github.io/lifeline/", src:"https://github.com/rahulatrkm/lifeline" },
+  { name:"OGCheck", emoji:"🔗", cat:"tool", tag:"Dev tool · SEO",
+    desc:"Validate a page's Open Graph / social-preview tags, robots.txt and sitemap in one request — and confirm the preview image actually loads. API + CLI + CI action.",
+    url:"https://ogcheck.onrender.com", src:"https://github.com/rahulatrkm/ogcheck" },
+  { name:"InvoicePDF", emoji:"🧾", cat:"tool", tag:"Dev tool · API",
+    desc:"Generate clean invoice & receipt PDFs from JSON in one API call. Pure Python, no headless browser, exact money math.",
+    url:"https://invoicepdf-hqz7.onrender.com", src:"https://github.com/rahulatrkm/invoicepdf" },
+  { name:"Metascrub", emoji:"🖼️", cat:"util", tag:"Privacy",
+    desc:"See what your photos secretly leak — GPS location, device, AI fingerprints — then strip it. 100% in your browser, nothing uploaded.",
+    url:"https://rahulatrkm.github.io/metascrub/", src:"https://github.com/rahulatrkm/metascrub" },
+  { name:"Voxelia", emoji:"🧊", cat:"game", tag:"Game · 3D",
+    desc:"A 3D voxel sandbox — mine and place textured blocks, survive with health & hunger, fight mobs at night, craft and build. Runs in your browser.",
+    url:"https://rahulatrkm.github.io/voxelia/", src:"https://github.com/rahulatrkm/voxelia" },
+  { name:"Bloom", emoji:"🌸", cat:"game", tag:"Game · Casual",
+    desc:"One tap sets off a cascade of light — a mesmerizing chain-reaction game where every orb color chains differently. Endless and addictive.",
+    url:"https://rahulatrkm.github.io/bloom/", src:"https://github.com/rahulatrkm/bloom" },
+  { name:"Tiger: Jungle Survival", emoji:"🐅", cat:"game", tag:"Game · Sim",
+    desc:"Play a tiger surviving in a jungle — choose male or female, roam the wild and a village, manage hunger, peek into homes and hunt.",
+    url:"https://rahulatrkm.github.io/tiger/", src:"https://github.com/rahulatrkm/tiger" },
+  { name:"Faint", emoji:"🎨", cat:"game", tag:"Game · Daily",
+    desc:"The daily color-perception game — one tile is a faintly different shade. Find it. It gets harder every round. Wordle-style shareable score.",
+    url:"https://rahulatrkm.github.io/faint/", src:"https://github.com/rahulatrkm/faint" },
+];
+
+const grid=document.getElementById("grid");
+function render(filter="all"){
+  grid.innerHTML="";
+  PROJECTS.filter(p=> filter==="all" || p.cat===filter).forEach(p=>{
+    const a=document.createElement("a"); a.className="card"; a.href=p.url; a.target="_blank"; a.rel="noopener";
+    a.innerHTML=`
+      <a class="src" href="${p.src}" target="_blank" rel="noopener" onclick="event.stopPropagation()">‹ source ›</a>
+      <div class="top"><div class="emoji">${p.emoji}</div><div><h3>${p.name}</h3><div class="tag">${p.tag}</div></div></div>
+      <p>${p.desc}</p>
+      <div class="foot"><span class="badge ${p.cat}">${p.cat==="ai"?"AI":p.cat==="tool"?"Dev tool":p.cat==="util"?"Everyday":"Game"}</span><span class="go">Open →</span></div>`;
+    grid.appendChild(a);
+  });
+}
+document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{
+  document.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); c.classList.add("on"); render(c.dataset.f);
+}));
+render();
+</script>
+</body>
+</html>
