@@ -3,83 +3,98 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Rahul's Studio — apps, tools & games</title>
-<meta name="description" content="A collection of free web apps, developer tools and browser games — from an AI contract reviewer and a plain-language document explainer to voxel worlds and daily games. All free, no signup." />
+<title>Rahul — Product Portfolio</title>
+<meta name="description" content="Product portfolio of Rahul: free web apps, developer tools and browser games — including an AI contract reviewer, a plain-language document explainer, an offline first-aid guide and more. All free, no signup." />
 <meta name="theme-color" content="#0b1020" />
-<meta property="og:title" content="Rahul's Studio — apps, tools & games" />
-<meta property="og:description" content="Free web apps, tools and games — AI contract review, plain-language explainer, offline first-aid, voxel sandbox, and more." />
+<meta property="og:title" content="Rahul — Product Portfolio" />
+<meta property="og:description" content="Free web apps, developer tools and games — AI contract review, plain-language explainer, offline first-aid, voxel sandbox, and more." />
 <meta property="og:type" content="website" />
 <style>
-  :root{ --bg:#0b1020; --bg2:#0a0e1c; --card:#121a30; --line:#243050; --fg:#eaf0ff; --muted:#9aa8cc;
-    --a1:#6ea8ff; --a2:#a68bff; --a3:#39d98a; --a4:#ffb454; }
+  :root{ --bg:#0b1020; --bg2:#0a0e1c; --card:#121a30; --line:#2a3860; --fg:#f2f5ff; --muted:#b3bfe0;
+    --a1:#89b6ff; --a2:#b7a2ff; --a3:#5ee3a0; --a4:#ffc06b; --focus:#ffd76b; }
   *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif; color:var(--fg); line-height:1.6;
     background:radial-gradient(1200px 600px at 82% -10%,#1a2450 0,transparent 58%),radial-gradient(1000px 560px at 6% 0,#16203f 0,var(--bg) 55%); background-color:var(--bg); min-height:100vh}
+  a{color:var(--a1)}
+  a:focus-visible, button:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; border-radius:6px }
+  .skip{position:absolute; left:-9999px; top:0; background:var(--focus); color:#0b1020; padding:10px 16px; border-radius:0 0 10px 0; font-weight:700; z-index:100}
+  .skip:focus{left:0}
   .wrap{max-width:1040px; margin:0 auto; padding:46px 20px 90px}
   header{text-align:center; margin-bottom:12px}
-  .kicker{display:inline-flex; gap:8px; align-items:center; font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; color:var(--a1);
-    border:1px solid var(--line); background:rgba(110,168,255,.07); padding:6px 13px; border-radius:999px}
-  h1{font-size:2.7rem; line-height:1.1; margin:.4em 0 .2em; letter-spacing:-1px}
-  h1 .g{background:linear-gradient(90deg,var(--a1),var(--a2)); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .kicker{display:inline-flex; gap:8px; align-items:center; font-size:.76rem; letter-spacing:.1em; text-transform:uppercase; color:var(--a1);
+    border:1px solid var(--line); background:rgba(137,182,255,.1); padding:6px 13px; border-radius:999px}
+  h1{font-size:2.7rem; line-height:1.1; margin:.4em 0 .2em; letter-spacing:-1px; color:var(--fg)}
+  h1 .g{background:linear-gradient(90deg,var(--a1),var(--a2)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:var(--a1)}
   .sub{color:var(--muted); font-size:1.12rem; max-width:640px; margin:0 auto}
   .links{display:flex; gap:12px; justify-content:center; margin-top:18px; flex-wrap:wrap}
-  .links a{color:var(--fg); text-decoration:none; border:1px solid var(--line); padding:9px 16px; border-radius:11px; font-size:.9rem; font-weight:600}
+  .links a{color:var(--fg); text-decoration:none; border:1px solid var(--line); padding:9px 16px; border-radius:11px; font-size:.92rem; font-weight:600}
   .links a:hover{border-color:var(--a1)}
   .filters{display:flex; gap:8px; justify-content:center; margin:34px 0 20px; flex-wrap:wrap}
-  .chip{cursor:pointer; border:1px solid var(--line); background:transparent; color:var(--muted); padding:8px 15px; border-radius:999px; font-size:.86rem; font-weight:600}
-  .chip.on{background:linear-gradient(90deg,var(--a1),var(--a2)); border-color:transparent; color:#0b1020}
-  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px}
+  .chip{cursor:pointer; border:1px solid var(--line); background:transparent; color:var(--muted); padding:8px 15px; border-radius:999px; font-size:.88rem; font-weight:600}
+  .chip:hover{color:var(--fg); border-color:var(--a1)}
+  .chip[aria-pressed="true"]{background:linear-gradient(90deg,var(--a1),var(--a2)); border-color:transparent; color:#0b1020}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; list-style:none}
   .card{background:linear-gradient(180deg,var(--card),var(--bg2)); border:1px solid var(--line); border-radius:18px; padding:20px; display:flex; flex-direction:column; gap:10px;
-    text-decoration:none; color:var(--fg); transition:.15s; position:relative; overflow:hidden}
+    transition:transform .15s, border-color .15s; position:relative; height:100%}
   .card:hover{transform:translateY(-3px); border-color:var(--a1)}
+  .card:focus-within{border-color:var(--a1)}
   .card .top{display:flex; align-items:center; gap:12px}
   .card .emoji{font-size:2rem; width:52px; height:52px; display:flex; align-items:center; justify-content:center; background:#0d1428; border:1px solid var(--line); border-radius:13px; flex:0 0 auto}
-  .card h3{font-size:1.16rem}
-  .card .tag{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted)}
-  .card p{color:var(--muted); font-size:.92rem; flex:1}
-  .card .foot{display:flex; align-items:center; justify-content:space-between; margin-top:4px}
-  .badge{font-size:.7rem; padding:3px 9px; border-radius:999px; font-weight:700}
-  .badge.tool{background:rgba(110,168,255,.14); color:var(--a1)}
-  .badge.game{background:rgba(166,139,255,.16); color:var(--a2)}
-  .badge.ai{background:rgba(57,217,138,.14); color:var(--a3)}
-  .badge.util{background:rgba(255,180,84,.14); color:var(--a4)}
-  .card .go{font-size:.85rem; color:var(--a1); font-weight:700}
-  .src{position:absolute; top:14px; right:14px; color:var(--muted); font-size:.78rem; text-decoration:none; opacity:.7}
-  .src:hover{opacity:1; color:var(--fg)}
-  footer{text-align:center; color:var(--muted); font-size:.85rem; margin-top:44px; border-top:1px solid var(--line); padding-top:22px}
+  .card h3{font-size:1.16rem; margin:0}
+  .card h3 a{color:var(--fg); text-decoration:none}
+  .card h3 a::after{content:""; position:absolute; inset:0; border-radius:18px}
+  .card .tag{font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted)}
+  .card p{color:var(--muted); font-size:.94rem; flex:1}
+  .card .foot{display:flex; align-items:center; justify-content:space-between; margin-top:4px; position:relative; z-index:1}
+  .badge{font-size:.72rem; padding:3px 9px; border-radius:999px; font-weight:700}
+  .badge.tool{background:rgba(137,182,255,.18); color:var(--a1)}
+  .badge.game{background:rgba(183,162,255,.2); color:var(--a2)}
+  .badge.ai{background:rgba(94,227,160,.18); color:var(--a3)}
+  .badge.util{background:rgba(255,192,107,.18); color:var(--a4)}
+  .card .srclink{position:relative; z-index:1; font-size:.82rem; color:var(--muted); text-decoration:none; font-weight:600}
+  .card .srclink:hover{color:var(--fg)}
+  footer{text-align:center; color:var(--muted); font-size:.88rem; margin-top:44px; border-top:1px solid var(--line); padding-top:22px}
   footer a{color:var(--a1)}
+  .visually-hidden{position:absolute!important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+  @media (prefers-reduced-motion: reduce){ *{transition:none!important; scroll-behavior:auto!important} .card:hover{transform:none} }
 </style>
 </head>
 <body>
+<a class="skip" href="#projects">Skip to projects</a>
 <div class="wrap">
   <header>
-    <span class="kicker">● Independent maker · everything free</span>
-    <h1>Things I've <span class="g">built</span></h1>
-    <p class="sub">A growing collection of free web apps, developer tools and browser games. No signup, no tracking — just open and use them.</p>
-    <div class="links">
-      <a href="https://github.com/rahulatrkm" target="_blank" rel="noopener">GitHub ↗</a>
-      <a href="https://dev.to/rahul_85ac39adcd5c87cfd93" target="_blank" rel="noopener">dev.to ↗</a>
-    </div>
+    <p class="kicker">Independent software maker · everything free</p>
+    <h1>Rahul — <span class="g">Product Portfolio</span></h1>
+    <p class="sub">A collection of free web apps, developer tools and browser games. No signup, no tracking — open and use them.</p>
+    <nav class="links" aria-label="Profiles">
+      <a href="https://github.com/rahulatrkm" target="_blank" rel="noopener">GitHub<span class="visually-hidden"> (opens in a new tab)</span> ↗</a>
+      <a href="https://dev.to/rahul_85ac39adcd5c87cfd93" target="_blank" rel="noopener">dev.to<span class="visually-hidden"> (opens in a new tab)</span> ↗</a>
+    </nav>
   </header>
 
-  <div class="filters" id="filters">
-    <button class="chip on" data-f="all">All</button>
-    <button class="chip" data-f="ai">AI</button>
-    <button class="chip" data-f="tool">Dev tools</button>
-    <button class="chip" data-f="util">Everyday</button>
-    <button class="chip" data-f="game">Games</button>
-  </div>
+  <main id="projects">
+    <div class="filters" role="group" aria-label="Filter projects by category" id="filters">
+      <button class="chip" data-f="all" aria-pressed="true">All</button>
+      <button class="chip" data-f="ai" aria-pressed="false">AI</button>
+      <button class="chip" data-f="tool" aria-pressed="false">Developer tools</button>
+      <button class="chip" data-f="util" aria-pressed="false">Everyday</button>
+      <button class="chip" data-f="game" aria-pressed="false">Games</button>
+    </div>
 
-  <div class="grid" id="grid"></div>
+    <ul class="grid" id="grid" aria-label="Projects"></ul>
+    <p id="count" class="visually-hidden" role="status" aria-live="polite"></p>
+  </main>
 
   <footer>
-    Built by <a href="https://github.com/rahulatrkm" target="_blank" rel="noopener">@rahulatrkm</a>.
-    Everything here is free and open source. Backend apps may take ~30s to wake on first visit (free hosting).
+    <p>Built by <a href="https://github.com/rahulatrkm" target="_blank" rel="noopener">@rahulatrkm</a>.
+    Everything here is free and open source. Backend apps run on free hosting, so they may take about 30 seconds to wake on the first visit.</p>
   </footer>
 </div>
 
 <script>
 "use strict";
+const CAT_LABEL = { ai:"AI", tool:"Developer tool", util:"Everyday", game:"Game" };
 const PROJECTS = [
   { name:"ClauseClear", emoji:"📄", cat:"ai", tag:"AI · Legal",
     desc:"Paste a contract, lease, NDA or job offer and get the risky clauses explained in plain English — what's missing and what to push back on.",
@@ -113,21 +128,37 @@ const PROJECTS = [
     url:"https://rahulatrkm.github.io/faint/", src:"https://github.com/rahulatrkm/faint" },
 ];
 
-const grid=document.getElementById("grid");
+const grid = document.getElementById("grid");
+const countEl = document.getElementById("count");
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
 function render(filter="all"){
   grid.innerHTML="";
-  PROJECTS.filter(p=> filter==="all" || p.cat===filter).forEach(p=>{
-    const a=document.createElement("a"); a.className="card"; a.href=p.url; a.target="_blank"; a.rel="noopener";
-    a.innerHTML=`
-      <a class="src" href="${p.src}" target="_blank" rel="noopener" onclick="event.stopPropagation()">‹ source ›</a>
-      <div class="top"><div class="emoji">${p.emoji}</div><div><h3>${p.name}</h3><div class="tag">${p.tag}</div></div></div>
-      <p>${p.desc}</p>
-      <div class="foot"><span class="badge ${p.cat}">${p.cat==="ai"?"AI":p.cat==="tool"?"Dev tool":p.cat==="util"?"Everyday":"Game"}</span><span class="go">Open →</span></div>`;
-    grid.appendChild(a);
-  });
+  const items = PROJECTS.filter(p => filter==="all" || p.cat===filter);
+  for(const p of items){
+    const li=document.createElement("li"); li.className="card";
+    li.innerHTML = `
+      <div class="top">
+        <div class="emoji" aria-hidden="true">${p.emoji}</div>
+        <div>
+          <h3><a href="${p.url}" target="_blank" rel="noopener">${esc(p.name)}<span class="visually-hidden"> — open ${esc(CAT_LABEL[p.cat])} (opens in a new tab)</span></a></h3>
+          <p class="tag">${esc(p.tag)}</p>
+        </div>
+      </div>
+      <p>${esc(p.desc)}</p>
+      <div class="foot">
+        <span class="badge ${p.cat}">${esc(CAT_LABEL[p.cat])}</span>
+        <a class="srclink" href="${p.src}" target="_blank" rel="noopener" aria-label="View ${esc(p.name)} source code on GitHub (opens in a new tab)">Source ↗</a>
+      </div>`;
+    grid.appendChild(li);
+  }
+  countEl.textContent = `Showing ${items.length} project${items.length===1?"":"s"}.`;
 }
-document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{
-  document.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); c.classList.add("on"); render(c.dataset.f);
+
+document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
+  document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", "false"));
+  c.setAttribute("aria-pressed", "true");
+  render(c.dataset.f);
 }));
 render();
 </script>
