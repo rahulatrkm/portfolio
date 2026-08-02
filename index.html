@@ -119,6 +119,21 @@
   }
   .src:hover{color:var(--accent)}
   .src svg{width:13px; height:13px}
+  .acts{display:inline-flex; align-items:center; gap:12px}
+  .like{
+    position:relative; z-index:1; display:inline-flex; align-items:center; gap:6px;
+    font:inherit; font-size:13px; font-weight:550; color:var(--text-3); cursor:pointer;
+    background:none; border:1px solid var(--line); border-radius:999px; padding:5px 10px;
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .like:hover{border-color:var(--line-2); color:var(--text)}
+  .like svg{width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:1.9;
+    transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+  .like[aria-pressed="true"]{color:#dc2657; border-color:currentColor; background:rgba(220,38,87,.08)}
+  .like[aria-pressed="true"] svg{fill:currentColor}
+  .like .n{font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+  .like.pulse svg{animation:likepop .36s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes likepop{40%{transform:scale(1.45)}}
 
   /* ---------- footer ---------- */
   footer{margin-top:72px; padding:28px 0 64px; border-top:1px solid var(--line); color:var(--text-3); font-size:13.5px}
@@ -155,6 +170,7 @@
     <nav class="filters" role="group" aria-label="Filter projects">
       <button class="chip" data-f="featured" aria-pressed="true">Featured</button>
       <button class="chip" data-f="all" aria-pressed="false">All</button>
+      <button class="chip" data-f="popular" aria-pressed="false">Most liked</button>
       <button class="chip" data-f="ai" aria-pressed="false">AI</button>
       <button class="chip" data-f="tool" aria-pressed="false">Developer</button>
       <button class="chip" data-f="util" aria-pressed="false">Everyday</button>
@@ -166,6 +182,7 @@
 
   <footer>
     <p>Everything here is free and open source under the MIT licence.</p>
+    <p class="note">Likes are anonymous — no account, no cookies, nothing tracked. They just tell me which of these are worth building on.</p>
     <p class="note">Some apps run on free hosting and may take a few seconds to wake on first visit.</p>
   </footer>
 </div>
@@ -247,9 +264,72 @@ const grid = document.getElementById("grid");
 const countEl = document.getElementById("count");
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
+/* ---------------- likes ----------------
+   Anonymous: no account, no cookie, no analytics. The counter is a separate
+   free service, so the page must be fully usable when it is asleep or gone —
+   counts simply stay hidden and everything else still works. */
+const LIKES_API = "https://portfolio-likes.onrender.com";
+const LIKED_KEY = "portfolio_liked_v1";
+const slugOf = p => p.src.split("/").pop();
+
+let LIKES = {};
+let LIKED = new Set();
+let currentFilter = "featured";
+try{ LIKED = new Set(JSON.parse(localStorage.getItem(LIKED_KEY) || "[]")); }catch(e){}
+
+function paintLikes(){
+  document.querySelectorAll(".like").forEach(btn => {
+    const slug = btn.dataset.slug, n = LIKES[slug];
+    const on = LIKED.has(slug);
+    btn.querySelector(".n").textContent = n == null ? "" : n;
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.setAttribute("aria-label",
+      `${on ? "Remove your like from" : "Like"} ${btn.dataset.name}` +
+      (n == null ? "" : `, ${n} ${n === 1 ? "like" : "likes"} so far`));
+  });
+}
+
+async function loadLikes(){
+  try{
+    const res = await fetch(`${LIKES_API}/api/likes`, { mode: "cors" });
+    if(!res.ok) return;
+    LIKES = await res.json();
+    if(currentFilter === "popular") render(currentFilter); else paintLikes();
+  }catch(e){ /* asleep or offline; the page does not depend on it */ }
+}
+
+async function toggleLike(btn){
+  const slug = btn.dataset.slug;
+  const wasOn = LIKED.has(slug);
+  wasOn ? LIKED.delete(slug) : LIKED.add(slug);
+  LIKES[slug] = Math.max(0, (LIKES[slug] || 0) + (wasOn ? -1 : 1));
+  try{ localStorage.setItem(LIKED_KEY, JSON.stringify([...LIKED])); }catch(e){}
+  btn.classList.remove("pulse");
+  void btn.offsetWidth;
+  if(!wasOn) btn.classList.add("pulse");
+  paintLikes();
+  try{
+    const res = await fetch(`${LIKES_API}/api/likes/${slug}${wasOn ? "?undo" : ""}`,
+                            { method: "POST", mode: "cors" });
+    const data = await res.json();
+    if(typeof data.n === "number"){ LIKES[slug] = data.n; paintLikes(); }
+  }catch(e){ /* keep the optimistic number; it reconciles on the next load */ }
+}
+
+grid.addEventListener("click", e => {
+  const btn = e.target.closest(".like");
+  if(!btn) return;
+  e.preventDefault();
+  toggleLike(btn);
+});
+
 function render(filter="featured"){
-  const items = PROJECTS.filter(p =>
-    filter === "all" ? true : filter === "featured" ? p.featured : p.cat === filter);
+  currentFilter = filter;
+  const items = filter === "popular"
+    ? PROJECTS.slice().sort((a, b) => (LIKES[slugOf(b)] || 0) - (LIKES[slugOf(a)] || 0)
+                                      || a.name.localeCompare(b.name))
+    : PROJECTS.filter(p =>
+        filter === "all" ? true : filter === "featured" ? p.featured : p.cat === filter);
   grid.innerHTML = items.map(p => `
     <li class="card">
       <div class="head">
@@ -262,12 +342,19 @@ function render(filter="featured"){
       <p>${esc(p.desc)}</p>
       <div class="foot">
         <span class="tag">${esc(p.cat === "ai" ? "AI" : p.cat === "tool" ? "Developer" : p.cat === "util" ? "Everyday" : "Game")}</span>
-        <a class="src" href="${p.src}" target="_blank" rel="noopener" aria-label="Source code for ${esc(p.name)} (new tab)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>Source
-        </a>
+        <span class="acts">
+          <button class="like" type="button" aria-pressed="false" data-slug="${esc(slugOf(p))}" data-name="${esc(p.name)}">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 5.6a5.2 5.2 0 00-7.4 0L12 7l-1.4-1.4a5.2 5.2 0 10-7.4 7.4L12 21l8.8-8a5.2 5.2 0 000-7.4z"/></svg>
+            <span class="n"></span>
+          </button>
+          <a class="src" href="${p.src}" target="_blank" rel="noopener" aria-label="Source code for ${esc(p.name)} (new tab)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>Source
+          </a>
+        </span>
       </div>
     </li>`).join("");
   countEl.textContent = `Showing ${items.length} project${items.length === 1 ? "" : "s"}.`;
+  paintLikes();
 }
 
 document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
@@ -276,6 +363,7 @@ document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () =
   render(c.dataset.f);
 }));
 render();
+loadLikes();
 </script>
 </body>
 </html>

@@ -1,0 +1,16 @@
+# Render.com free-tier deploy for the portfolio likes counter.
+# In Render: New > Blueprint > connect the portfolio repo. Free plan.
+# Set LIKES_SALT to any long random string so day-hashes survive restarts.
+services:
+  - type: web
+    name: portfolio-likes
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn --bind 0.0.0.0:$PORT --timeout 30 --workers 1 wsgi:app"
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12"
+      - key: LIKES_SALT
+        generateValue: true
