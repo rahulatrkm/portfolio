@@ -27,9 +27,11 @@ def ok(name: str, cond: bool, extra: str = "") -> None:
         print(f"  FAIL  {name}  {extra}")
 
 
-def call(method: str, path: str, ip: str = "203.0.113.7", origin: str | None = None, qs: str = ""):
+def call(method: str, path: str, ip: str = "203.0.113.7", origin: str | None = None,
+         qs: str = "", extra: dict | None = None):
     env = {"REQUEST_METHOD": method, "PATH_INFO": path, "QUERY_STRING": qs,
            "CONTENT_LENGTH": "0", "wsgi.input": io.BytesIO(b""), "REMOTE_ADDR": ip}
+    env.update(extra or {})
     if origin:
         env["HTTP_ORIGIN"] = origin
     cap = {}
@@ -137,6 +139,88 @@ ok("the server allows nothing the page never sends",
 ok("every slug matches the accepted pattern",
    all(A.SLUG_RE.match(s) for s in _slugs))
 ok("the page points at a likes API", "LIKES_API" in _html)
+
+# --------------------------------------------------------------------- views
+# The counter's justification is that it respects privacy, so the privacy
+# promises are what is worth asserting, not just that a number goes up.
+print("\nVIEWS — counting")
+
+
+def wipe() -> None:
+    import sqlite3
+    conn = sqlite3.connect(A.DB_PATH)
+    for t in ("views", "seen", "refs"):
+        conn.execute(f"DELETE FROM {t}")
+    conn.commit()
+    conn.close()
+
+
+ok("the portfolio page is countable but not likeable",
+   "portfolio" in A.COUNTABLE and "portfolio" not in A.PRODUCTS)
+
+wipe()
+A.add_view("lifeline", "1.2.3.4", "linkedin.com")
+A.add_view("lifeline", "1.2.3.4", "linkedin.com")
+A.add_view("lifeline", "5.6.7.8", "linkedin.com")
+A.add_view("voxelia", "9.9.9.9", "")
+st = A.view_stats()
+ok("views are counted per product", st["products"]["lifeline"]["total"] == 3, str(st["products"]["lifeline"]))
+ok("today's count is separated out", st["products"]["lifeline"]["today"] == 3)
+ok("the totals add up", st["total"] == 4, str(st["total"]))
+ok("repeat visits from one address count once as unique", st["unique_today"] == 3,
+   f"{st['unique_today']} unique from 3 addresses")
+ok("referrers are attributed", st["referrers"].get("linkedin.com") == 3, str(st["referrers"]))
+ok("a missing referrer is not invented", "" not in st["referrers"])
+ok("every countable page appears in the stats", len(st["products"]) == len(A.COUNTABLE))
+ok("a daily series is kept, so a spike is visible", len(st["by_day"]) >= 1)
+
+print("\nVIEWS — privacy")
+_conn = __import__("sqlite3").connect(A.DB_PATH)
+_dump = "\n".join(str(r) for t in ("views", "seen", "refs", "votes", "likes")
+                   for r in _conn.execute(f"SELECT * FROM {t}").fetchall())
+_conn.close()
+ok("no IP address reaches the database",
+   not any(x in _dump for x in ("1.2.3.4", "5.6.7.8", "9.9.9.9")))
+ok("the visitor hash is stored, not the visitor", len(_dump) > 0)
+
+_cases = [
+    ("https://www.linkedin.com/feed/update/xyz?utm=1", "linkedin.com"),
+    ("HTTPS://News.YCombinator.com/item?id=42", "news.ycombinator.com"),
+    ("https://t.co/abc", "t.co"),
+    ("javascript:alert(1)", ""),
+    ("localhost", ""),
+    ("<script>alert(1)</script>", ""),
+    ("a" * 80, ""),
+    ("", ""),
+    (None, ""),
+]
+_bad = [(raw, A.clean_host(raw)) for raw, want in _cases if A.clean_host(raw) != want]
+ok("only a bare hostname survives from a referrer", not _bad, str(_bad))
+ok("the path of a referring URL is thrown away",
+   "/" not in A.clean_host("https://linkedin.com/feed/some-private-group"))
+
+wipe()
+status, _, _ = call("POST", "/api/view/lifeline", extra={"HTTP_DNT": "1"})
+ok("do-not-track is honoured", status == 204 and A.view_stats()["total"] == 0, str(status))
+call("POST", "/api/view/lifeline", extra={"HTTP_SEC_GPC": "1"})
+ok("global privacy control is honoured", A.view_stats()["total"] == 0)
+
+print("\nVIEWS — endpoint")
+wipe()
+status, _, body = call("POST", "/api/view/lifeline")
+ok("a normal visit is counted", status == 204 and A.view_stats()["total"] == 1, str(status))
+ok("counting returns no body at all", body == b"")
+status, _, _ = call("POST", "/api/view/nosuchthing")
+ok("an unknown page is rejected", status == 404)
+status, _, _ = call("POST", "/api/view/portfolio")
+ok("the portfolio page can be counted", status == 204)
+status, _, body = call("GET", "/api/views")
+ok("the stats endpoint answers with json", status == 200 and "products" in json.loads(body))
+
+wipe()
+call("POST", "/api/view/lifeline", qs="r=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fx")
+ok("a referrer sent as a full URL is reduced to its host",
+   A.view_stats()["referrers"] == {"linkedin.com": 1}, str(A.view_stats()["referrers"]))
 
 print(f"\n{PASS} passed, {FAIL} failed\n")
 sys.exit(1 if FAIL else 0)

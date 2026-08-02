@@ -365,5 +365,20 @@ document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () =
 render();
 loadLikes();
 </script>
+<script data-count="portfolio">
+/* Anonymous page count: no cookies, no identifier, no path, nothing about you.
+   One ping saying "a page was opened" and which site linked here. Honours
+   Do Not Track and Global Privacy Control, and fails silently offline. */
+(function(){try{
+  var n=navigator;
+  if(n.doNotTrack==="1"||window.doNotTrack==="1"||n.msDoNotTrack==="1"||n.globalPrivacyControl)return;
+  if(n.onLine===false)return;
+  var h="";try{if(document.referrer)h=new URL(document.referrer).hostname;}catch(e){}
+  if(h===location.hostname)h="";
+  var u="https://portfolio-likes.onrender.com/api/view/portfolio"+(h?"?r="+encodeURIComponent(h):"");
+  if(n.sendBeacon)n.sendBeacon(u);
+  else fetch(u,{method:"POST",mode:"no-cors",keepalive:true}).catch(function(){});
+}catch(e){}})();
+</script>
 </body>
 </html>
