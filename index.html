@@ -343,7 +343,7 @@ function render(filter="featured"){
       <div class="foot">
         <span class="tag">${esc(p.cat === "ai" ? "AI" : p.cat === "tool" ? "Developer" : p.cat === "util" ? "Everyday" : "Game")}</span>
         <span class="acts">
-          <button class="like" type="button" aria-pressed="false" data-slug="${esc(slugOf(p))}" data-name="${esc(p.name)}">
+          <button class="like" type="button" aria-pressed="false" aria-label="Like ${esc(p.name)}" data-slug="${esc(slugOf(p))}" data-name="${esc(p.name)}">
             <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 5.6a5.2 5.2 0 00-7.4 0L12 7l-1.4-1.4a5.2 5.2 0 10-7.4 7.4L12 21l8.8-8a5.2 5.2 0 000-7.4z"/></svg>
             <span class="n"></span>
           </button>
