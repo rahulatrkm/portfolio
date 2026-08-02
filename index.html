@@ -3,165 +3,251 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Product Portfolio — apps, tools & games</title>
-<meta name="description" content="A portfolio of free web apps, developer tools and browser games — including an AI contract reviewer, a plain-language document explainer, an offline first-aid guide and more. All free, no signup." />
-<meta name="theme-color" content="#0b1020" />
-<meta property="og:title" content="Product Portfolio — apps, tools & games" />
-<meta property="og:description" content="Free web apps, developer tools and games — AI contract review, plain-language explainer, offline first-aid, voxel sandbox, and more." />
+<title>Product Portfolio — apps, tools &amp; games</title>
+<meta name="description" content="A portfolio of free web apps, developer tools and browser games — an AI contract reviewer, a plain-language document explainer, an offline first-aid guide and more. All free, no signup." />
+<meta name="color-scheme" content="light dark" />
+<meta property="og:title" content="Product Portfolio — apps, tools &amp; games" />
+<meta property="og:description" content="Free web apps, developer tools and games. All free, no signup, nothing stored." />
 <meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111827'/><path d='M9 21V11h4.2a3.4 3.4 0 010 6.8H9' stroke='white' stroke-width='2.2' fill='none' stroke-linecap='round'/></svg>" />
 <style>
-  :root{ --bg:#0b1020; --bg2:#0a0e1c; --card:#121a30; --line:#2a3860; --fg:#f2f5ff; --muted:#b3bfe0;
-    --a1:#89b6ff; --a2:#b7a2ff; --a3:#5ee3a0; --a4:#ffc06b; --focus:#ffd76b; }
-  *{box-sizing:border-box; margin:0; padding:0}
-  html{scroll-behavior:smooth}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif; color:var(--fg); line-height:1.6;
-    background:radial-gradient(1200px 600px at 82% -10%,#1a2450 0,transparent 58%),radial-gradient(1000px 560px at 6% 0,#16203f 0,var(--bg) 55%); background-color:var(--bg); min-height:100vh}
-  a{color:var(--a1)}
-  a:focus-visible, button:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; border-radius:6px }
-  .skip{position:absolute; left:-9999px; top:0; background:var(--focus); color:#0b1020; padding:10px 16px; border-radius:0 0 10px 0; font-weight:700; z-index:100}
+  :root{
+    --bg:#ffffff; --surface:#ffffff; --raised:#fafafa;
+    --text:#111827; --text-2:#4b5563; --text-3:#6b7280;
+    --line:#e5e7eb; --line-2:#d1d5db;
+    --accent:#4338ca; --accent-soft:#eef2ff;
+    --ok:#047857; --ok-soft:#ecfdf5;
+    --radius:12px;
+    --shadow:0 1px 2px rgba(16,24,40,.04), 0 1px 3px rgba(16,24,40,.06);
+    --shadow-lg:0 4px 6px -2px rgba(16,24,40,.03), 0 12px 16px -4px rgba(16,24,40,.08);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0b0c0f; --surface:#131519; --raised:#181a1f;
+      --text:#f3f4f6; --text-2:#b6bcc7; --text-3:#8b93a1;
+      --line:#23262d; --line-2:#31353d;
+      --accent:#a5b4fc; --accent-soft:#1c1f34;
+      --ok:#6ee7b7; --ok-soft:#10231c;
+      --shadow:0 1px 2px rgba(0,0,0,.3); --shadow-lg:0 12px 28px -8px rgba(0,0,0,.55);
+    }
+  }
+  *,*::before,*::after{box-sizing:border-box; margin:0; padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  a{color:inherit; text-decoration:none}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:4px}
+  .skip{position:absolute; left:-9999px; top:0; background:var(--accent); color:#fff; padding:12px 18px; z-index:99; border-radius:0 0 8px 0}
   .skip:focus{left:0}
-  .wrap{max-width:1040px; margin:0 auto; padding:46px 20px 90px}
-  header{text-align:center; margin-bottom:12px}
-  .kicker{display:inline-flex; gap:8px; align-items:center; font-size:.76rem; letter-spacing:.1em; text-transform:uppercase; color:var(--a1);
-    border:1px solid var(--line); background:rgba(137,182,255,.1); padding:6px 13px; border-radius:999px}
-  h1{font-size:2.7rem; line-height:1.1; margin:.4em 0 .2em; letter-spacing:-1px; color:var(--fg)}
-  h1 .g{background:linear-gradient(90deg,var(--a1),var(--a2)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:var(--a1)}
-  .sub{color:var(--muted); font-size:1.12rem; max-width:640px; margin:0 auto}
-  .links{display:flex; gap:12px; justify-content:center; margin-top:18px; flex-wrap:wrap}
-  .links a{color:var(--fg); text-decoration:none; border:1px solid var(--line); padding:9px 16px; border-radius:11px; font-size:.92rem; font-weight:600}
-  .links a:hover{border-color:var(--a1)}
-  .filters{display:flex; gap:8px; justify-content:center; margin:34px 0 20px; flex-wrap:wrap}
-  .chip{cursor:pointer; border:1px solid var(--line); background:transparent; color:var(--muted); padding:8px 15px; border-radius:999px; font-size:.88rem; font-weight:600}
-  .chip:hover{color:var(--fg); border-color:var(--a1)}
-  .chip[aria-pressed="true"]{background:linear-gradient(90deg,var(--a1),var(--a2)); border-color:transparent; color:#0b1020}
-  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; list-style:none}
-  .card{background:linear-gradient(180deg,var(--card),var(--bg2)); border:1px solid var(--line); border-radius:18px; padding:20px; display:flex; flex-direction:column; gap:10px;
-    transition:transform .15s, border-color .15s; position:relative; height:100%}
-  .card:hover{transform:translateY(-3px); border-color:var(--a1)}
-  .card:focus-within{border-color:var(--a1)}
-  .card .top{display:flex; align-items:center; gap:12px}
-  .card .emoji{font-size:2rem; width:52px; height:52px; display:flex; align-items:center; justify-content:center; background:#0d1428; border:1px solid var(--line); border-radius:13px; flex:0 0 auto}
-  .card h3{font-size:1.16rem; margin:0}
-  .card h3 a{color:var(--fg); text-decoration:none}
-  .card h3 a::after{content:""; position:absolute; inset:0; border-radius:18px}
-  .card .tag{font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted)}
-  .card p{color:var(--muted); font-size:.94rem; flex:1}
-  .card .foot{display:flex; align-items:center; justify-content:space-between; margin-top:4px; position:relative; z-index:1}
-  .badge{font-size:.72rem; padding:3px 9px; border-radius:999px; font-weight:700}
-  .badge.tool{background:rgba(137,182,255,.18); color:var(--a1)}
-  .badge.game{background:rgba(183,162,255,.2); color:var(--a2)}
-  .badge.ai{background:rgba(94,227,160,.18); color:var(--a3)}
-  .badge.util{background:rgba(255,192,107,.18); color:var(--a4)}
-  .card .srclink{position:relative; z-index:1; font-size:.82rem; color:var(--muted); text-decoration:none; font-weight:600}
-  .card .srclink:hover{color:var(--fg)}
-  footer{text-align:center; color:var(--muted); font-size:.88rem; margin-top:44px; border-top:1px solid var(--line); padding-top:22px}
-  footer a{color:var(--a1)}
-  .visually-hidden{position:absolute!important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
-  @media (prefers-reduced-motion: reduce){ *{transition:none!important; scroll-behavior:auto!important} .card:hover{transform:none} }
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px}
+
+  /* ---------- header ---------- */
+  header{padding:80px 0 0}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:7px;
+    font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--text-3); margin-bottom:20px;
+  }
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--ok)}
+  h1{
+    font-size:clamp(2.25rem, 5vw, 3.25rem); line-height:1.08; font-weight:680;
+    letter-spacing:-.032em; margin-bottom:18px; max-width:16ch;
+  }
+  .lede{font-size:clamp(1.0625rem,1.6vw,1.1875rem); color:var(--text-2); max-width:56ch; line-height:1.65}
+  .meta{display:flex; gap:22px; flex-wrap:wrap; margin-top:28px; align-items:center}
+  .meta a{
+    display:inline-flex; align-items:center; gap:7px; font-size:14px; font-weight:550;
+    color:var(--text-2); border-bottom:1px solid transparent; padding-bottom:1px; transition:.15s;
+  }
+  .meta a:hover{color:var(--text); border-bottom-color:var(--line-2)}
+  .meta svg{width:15px; height:15px}
+
+  /* ---------- filters ---------- */
+  nav.filters{
+    display:flex; gap:4px; flex-wrap:wrap; margin:56px 0 24px;
+    border-bottom:1px solid var(--line); padding-bottom:0;
+  }
+  .chip{
+    appearance:none; background:none; border:0; cursor:pointer; font:inherit;
+    font-size:14px; font-weight:550; color:var(--text-3);
+    padding:10px 14px; border-bottom:2px solid transparent; margin-bottom:-1px; transition:.15s;
+  }
+  .chip:hover{color:var(--text)}
+  .chip[aria-pressed="true"]{color:var(--text); border-bottom-color:var(--accent)}
+
+  /* ---------- cards ---------- */
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; list-style:none; padding:0}
+  .card{
+    position:relative; display:flex; flex-direction:column; gap:12px;
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; box-shadow:var(--shadow); transition:border-color .16s, box-shadow .16s, transform .16s;
+  }
+  .card:hover{border-color:var(--line-2); box-shadow:var(--shadow-lg); transform:translateY(-2px)}
+  .card:focus-within{border-color:var(--accent)}
+  .card .head{display:flex; align-items:flex-start; gap:13px}
+  .icon{
+    flex:0 0 auto; width:40px; height:40px; border-radius:9px;
+    background:var(--raised); border:1px solid var(--line);
+    display:grid; place-items:center; color:var(--accent);
+  }
+  .icon svg{width:19px; height:19px; stroke-width:1.75}
+  .card h3{font-size:1rem; font-weight:620; letter-spacing:-.01em; line-height:1.35}
+  .card h3 a::after{content:""; position:absolute; inset:0; border-radius:var(--radius)}
+  .kicker{font-size:12px; color:var(--text-3); font-weight:500; margin-top:1px}
+  .card p{font-size:14.5px; color:var(--text-2); line-height:1.6; flex:1}
+  .foot{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:2px}
+  .tag{
+    font-size:11.5px; font-weight:600; letter-spacing:.02em; text-transform:uppercase;
+    color:var(--text-3); background:var(--raised); border:1px solid var(--line);
+    padding:3px 9px; border-radius:20px;
+  }
+  .src{
+    position:relative; z-index:1; font-size:13px; font-weight:550; color:var(--text-3);
+    display:inline-flex; align-items:center; gap:5px; transition:color .15s;
+  }
+  .src:hover{color:var(--accent)}
+  .src svg{width:13px; height:13px}
+
+  /* ---------- footer ---------- */
+  footer{margin-top:72px; padding:28px 0 64px; border-top:1px solid var(--line); color:var(--text-3); font-size:13.5px}
+  footer a{color:var(--text-2); border-bottom:1px solid var(--line-2)}
+  footer a:hover{color:var(--text)}
+  .note{margin-top:8px; color:var(--text-3)}
+
+  .sr{position:absolute!important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+  @media (prefers-reduced-motion: reduce){ *{transition:none!important} .card:hover{transform:none} }
+  @media (max-width:600px){ header{padding-top:52px} nav.filters{margin-top:40px} }
 </style>
 </head>
 <body>
 <a class="skip" href="#projects">Skip to projects</a>
+
 <div class="wrap">
   <header>
-    <p class="kicker">Independent software maker · everything free</p>
-    <h1><span class="g">Product Portfolio</span></h1>
-    <p class="sub">A collection of free web apps, developer tools and browser games. No signup, no tracking — open and use them.</p>
-    <nav class="links" aria-label="Profiles">
-      <a href="https://github.com/rahulatrkm" target="_blank" rel="noopener">GitHub<span class="visually-hidden"> (opens in a new tab)</span> ↗</a>
-      <a href="https://dev.to/rahul_85ac39adcd5c87cfd93" target="_blank" rel="noopener">dev.to<span class="visually-hidden"> (opens in a new tab)</span> ↗</a>
-    </nav>
+    <p class="eyebrow"><span class="dot"></span>Independent software · everything free</p>
+    <h1>Small tools, built properly.</h1>
+    <p class="lede">A collection of free web apps, developer tools and browser games. No accounts, no tracking, nothing stored — open one and it just works.</p>
+    <div class="meta">
+      <a href="https://github.com/rahulatrkm" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2.17c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.68.8.56A11.51 11.51 0 0023.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+        GitHub<span class="sr"> (opens in a new tab)</span>
+      </a>
+      <a href="https://dev.to/rahul_85ac39adcd5c87cfd93" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 19.5V5a2 2 0 012-2h11l3 3v13.5a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 014 19.5z"/><path d="M8 9h6M8 13h8"/></svg>
+        Writing<span class="sr"> (opens in a new tab)</span>
+      </a>
+    </div>
   </header>
 
   <main id="projects">
-    <div class="filters" role="group" aria-label="Filter projects by category" id="filters">
+    <nav class="filters" role="group" aria-label="Filter projects">
       <button class="chip" data-f="featured" aria-pressed="true">Featured</button>
       <button class="chip" data-f="all" aria-pressed="false">All</button>
       <button class="chip" data-f="ai" aria-pressed="false">AI</button>
-      <button class="chip" data-f="tool" aria-pressed="false">Developer tools</button>
+      <button class="chip" data-f="tool" aria-pressed="false">Developer</button>
       <button class="chip" data-f="util" aria-pressed="false">Everyday</button>
       <button class="chip" data-f="game" aria-pressed="false">Games</button>
-    </div>
-
-    <ul class="grid" id="grid" aria-label="Projects"></ul>
-    <p id="count" class="visually-hidden" role="status" aria-live="polite"></p>
+    </nav>
+    <ul class="grid" id="grid"></ul>
+    <p id="count" class="sr" role="status" aria-live="polite"></p>
   </main>
 
   <footer>
-    <p>Built by <a href="https://github.com/rahulatrkm" target="_blank" rel="noopener">@rahulatrkm</a>.
-    Everything here is free and open source. Backend apps run on free hosting, so they may take about 30 seconds to wake on the first visit.</p>
+    <p>Everything here is free and open source under the MIT licence.</p>
+    <p class="note">Some apps run on free hosting and may take a few seconds to wake on first visit.</p>
   </footer>
 </div>
 
 <script>
 "use strict";
-const CAT_LABEL = { ai:"AI", tool:"Developer tool", util:"Everyday", game:"Game" };
+
+const ICON = {
+  doc:'<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/>',
+  translate:'<path d="M4 5h10M9 3v2c0 5-2.5 8-5 9"/><path d="M7 9c0 3 2.5 5.5 6 6.5"/><path d="M12 21l4.5-11 4.5 11M14.5 17h6"/>',
+  cross:'<path d="M12 5v14M5 12h14"/>',
+  link:'<path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/>',
+  receipt:'<path d="M5 3v18l2.5-1.5L10 21l2.5-1.5L15 21l2.5-1.5L20 21V3l-2.5 1.5L15 3l-2.5 1.5L10 3 7.5 4.5z"/><path d="M9 9h6M9 13h6"/>',
+  image:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 20"/>',
+  cube:'<path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/>',
+  spark:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8z"/>',
+  paw:'<circle cx="7" cy="9" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="17" cy="9" r="2"/><path d="M12 12c-3 0-5 2-5 4.5S9 21 12 21s5-2 5-4.5S15 12 12 12z"/>',
+  palette:'<path d="M12 3a9 9 0 000 18c1.1 0 2-.9 2-2 0-.5-.2-1-.6-1.4-.3-.4-.4-.8-.4-1.1 0-.8.7-1.5 1.5-1.5H16a5 5 0 005-5c0-3.9-4-7-9-7z"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="12" cy="7.5" r="1"/><circle cx="16.5" cy="10.5" r="1"/>',
+  mic:'<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/>',
+  wallet:'<path d="M3 7a2 2 0 012-2h13a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M16 12h3"/><path d="M3 9h18"/>',
+  shield:'<path d="M12 3l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6z"/><path d="M9.5 12.5l1.8 1.8 3.5-3.6"/>',
+};
+
 const PROJECTS = [
-  { name:"ClauseClear", emoji:"📄", cat:"ai", tag:"AI · Legal",
-    desc:"Paste a contract, lease, NDA or job offer and get the risky clauses explained in plain English — what's missing and what to push back on.",
-    url:"https://clauseclear.onrender.com", src:"https://github.com/rahulatrkm/clauseclear" },
-  { name:"Plainly", emoji:"🔤", cat:"ai", tag:"AI · Everyday",
-    desc:"Turn any confusing document or jargon — medical, legal, bank, government — into plain words at your reading level and language. Plus a scam/reality checker.",
-    url:"https://plainly-n6ni.onrender.com", src:"https://github.com/rahulatrkm/plainly" },  { name:"ResumeFit", emoji:"📋", cat:"ai", tag:"AI · Careers", featured:true,
-    desc:"Upload your CV and paste a job ad to get an honest match score, the keywords you're missing, screening issues, and stronger rewrites of your bullet points.",
-    url:"https://rahulatrkm.github.io/resumefit/", src:"https://github.com/rahulatrkm/resumefit" },
-  { name:"Rehearsal", emoji:"🎤", cat:"ai", tag:"AI · Careers", featured:true,
-    desc:"Free mock interviews, no signup — answer out loud or by typing, get scored every turn, face real follow-ups, and finish with an honest debrief.",
+  { name:"Rehearsal", icon:"mic", cat:"ai", tag:"Careers", featured:true,
+    desc:"Free mock interviews with no signup. Answer out loud or by typing, get scored every turn, face real follow-up questions, and finish with an honest debrief.",
     url:"https://rahulatrkm.github.io/rehearsal/", src:"https://github.com/rahulatrkm/rehearsal" },
-  { name:"Recur", emoji:"💸", cat:"util", tag:"Money · Private",
-    desc:"See what your subscriptions really cost per year, what renews next, and which ones quietly drain the most. Everything stays on your device.",
-    url:"https://rahulatrkm.github.io/recur/", src:"https://github.com/rahulatrkm/recur" },  { name:"Lifeline", emoji:"✚", cat:"util", tag:"Health · Offline", featured:true,
-    desc:"Calm, offline first-aid & emergency steps — choking, CPR, bleeding, stroke and more. Works with no internet. Installable on your phone.",
+  { name:"ResumeFit", icon:"doc", cat:"ai", tag:"Careers", featured:true,
+    desc:"Upload your CV and paste a job ad to get an honest match score, the keywords you are missing, screening issues, and stronger rewrites of your bullet points.",
+    url:"https://rahulatrkm.github.io/resumefit/", src:"https://github.com/rahulatrkm/resumefit" },
+  { name:"Lifeline", icon:"cross", cat:"util", tag:"Health", featured:true,
+    desc:"Calm, offline first-aid and emergency steps — choking, CPR, bleeding, stroke and more. Works with no internet and installs to your phone.",
     url:"https://rahulatrkm.github.io/lifeline/", src:"https://github.com/rahulatrkm/lifeline" },
-  { name:"OGCheck", emoji:"🔗", cat:"tool", tag:"Dev tool · SEO",
-    desc:"Validate a page's Open Graph / social-preview tags, robots.txt and sitemap in one request — and confirm the preview image actually loads. API + CLI + CI action.",
+  { name:"ClauseClear", icon:"shield", cat:"ai", tag:"Legal",
+    desc:"Paste a contract, lease, NDA or job offer and get the risky clauses explained in plain English — what is missing, and what to push back on.",
+    url:"https://clauseclear.onrender.com", src:"https://github.com/rahulatrkm/clauseclear" },
+  { name:"Plainly", icon:"translate", cat:"ai", tag:"Everyday",
+    desc:"Turn any confusing document — medical, legal, bank, government — into plain words at your reading level and language. Includes a scam and reality checker.",
+    url:"https://plainly-n6ni.onrender.com", src:"https://github.com/rahulatrkm/plainly" },
+  { name:"OGCheck", icon:"link", cat:"tool", tag:"Developer",
+    desc:"Validate a page's link-preview tags, robots.txt and sitemap in one request, and confirm the preview image actually loads. API, CLI and CI action.",
     url:"https://ogcheck.onrender.com", src:"https://github.com/rahulatrkm/ogcheck" },
-  { name:"InvoicePDF", emoji:"🧾", cat:"tool", tag:"Dev tool · API",
-    desc:"Generate clean invoice & receipt PDFs from JSON in one API call. Pure Python, no headless browser, exact money math.",
+  { name:"InvoicePDF", icon:"receipt", cat:"tool", tag:"Developer",
+    desc:"Generate clean invoice and receipt PDFs from JSON in a single API call. Pure Python, no headless browser, exact money maths.",
     url:"https://invoicepdf-hqz7.onrender.com", src:"https://github.com/rahulatrkm/invoicepdf" },
-  { name:"Metascrub", emoji:"🖼️", cat:"util", tag:"Privacy",
-    desc:"See what your photos secretly leak — GPS location, device, AI fingerprints — then strip it. 100% in your browser, nothing uploaded.",
+  { name:"Metascrub", icon:"image", cat:"util", tag:"Privacy",
+    desc:"See what your photos quietly leak — GPS location, device, AI fingerprints — then strip it. Runs entirely in your browser; nothing is uploaded.",
     url:"https://rahulatrkm.github.io/metascrub/", src:"https://github.com/rahulatrkm/metascrub" },
-  { name:"Voxelia", emoji:"🧊", cat:"game", tag:"Game · 3D",
-    desc:"A 3D voxel sandbox — mine and place textured blocks, survive with health & hunger, fight mobs at night, craft and build. Runs in your browser.",
+  { name:"Recur", icon:"wallet", cat:"util", tag:"Money",
+    desc:"See what your subscriptions really cost per year, what renews next, and which ones quietly drain the most. Everything stays on your device.",
+    url:"https://rahulatrkm.github.io/recur/", src:"https://github.com/rahulatrkm/recur" },
+  { name:"Voxelia", icon:"cube", cat:"game", tag:"3D",
+    desc:"A voxel sandbox in the browser — mine and place textured blocks, survive with health and hunger, fight mobs at night, craft and build.",
     url:"https://rahulatrkm.github.io/voxelia/", src:"https://github.com/rahulatrkm/voxelia" },
-  { name:"Bloom", emoji:"🌸", cat:"game", tag:"Game · Casual",
-    desc:"One tap sets off a cascade of light — a mesmerizing chain-reaction game where every orb color chains differently. Endless and addictive.",
+  { name:"Bloom", icon:"spark", cat:"game", tag:"Casual",
+    desc:"One tap sets off a cascade of light. A chain-reaction game where every orb colour chains differently.",
     url:"https://rahulatrkm.github.io/bloom/", src:"https://github.com/rahulatrkm/bloom" },
-  { name:"Tiger: Jungle Survival", emoji:"🐅", cat:"game", tag:"Game · Sim",
-    desc:"Play a tiger surviving in a jungle — choose male or female, roam the wild and a village, manage hunger, peek into homes and hunt.",
+  { name:"Tiger", icon:"paw", cat:"game", tag:"Simulation",
+    desc:"Survive as a tiger in a living jungle — roam the wild and a village, manage hunger, stalk prey and hunt.",
     url:"https://rahulatrkm.github.io/tiger/", src:"https://github.com/rahulatrkm/tiger" },
-  { name:"Faint", emoji:"🎨", cat:"game", tag:"Game · Daily",
-    desc:"The daily color-perception game — one tile is a faintly different shade. Find it. It gets harder every round. Wordle-style shareable score.",
+  { name:"Faint", icon:"palette", cat:"game", tag:"Daily",
+    desc:"The daily colour-perception game. One tile is a faintly different shade — find it. It gets harder every round.",
     url:"https://rahulatrkm.github.io/faint/", src:"https://github.com/rahulatrkm/faint" },
 ];
 
 const grid = document.getElementById("grid");
 const countEl = document.getElementById("count");
-function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 function render(filter="featured"){
-  grid.innerHTML="";
   const items = PROJECTS.filter(p =>
-    filter==="all" ? true : filter==="featured" ? p.featured : p.cat===filter);
-  for(const p of items){
-    const li=document.createElement("li"); li.className="card";
-    li.innerHTML = `
-      <div class="top">
-        <div class="emoji" aria-hidden="true">${p.emoji}</div>
+    filter === "all" ? true : filter === "featured" ? p.featured : p.cat === filter);
+  grid.innerHTML = items.map(p => `
+    <li class="card">
+      <div class="head">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${ICON[p.icon]||""}</svg></span>
         <div>
-          <h3><a href="${p.url}" target="_blank" rel="noopener">${esc(p.name)}<span class="visually-hidden"> — open ${esc(CAT_LABEL[p.cat])} (opens in a new tab)</span></a></h3>
-          <p class="tag">${esc(p.tag)}</p>
+          <h3><a href="${p.url}" target="_blank" rel="noopener">${esc(p.name)}<span class="sr"> — open (new tab)</span></a></h3>
+          <div class="kicker">${esc(p.tag)}</div>
         </div>
       </div>
       <p>${esc(p.desc)}</p>
       <div class="foot">
-        <span class="badge ${p.cat}">${esc(CAT_LABEL[p.cat])}</span>
-        <a class="srclink" href="${p.src}" target="_blank" rel="noopener" aria-label="View ${esc(p.name)} source code on GitHub (opens in a new tab)">Source ↗</a>
-      </div>`;
-    grid.appendChild(li);
-  }
-  countEl.textContent = `Showing ${items.length} project${items.length===1?"":"s"}.`;
+        <span class="tag">${esc(p.cat === "ai" ? "AI" : p.cat === "tool" ? "Developer" : p.cat === "util" ? "Everyday" : "Game")}</span>
+        <a class="src" href="${p.src}" target="_blank" rel="noopener" aria-label="Source code for ${esc(p.name)} (new tab)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>Source
+        </a>
+      </div>
+    </li>`).join("");
+  countEl.textContent = `Showing ${items.length} project${items.length === 1 ? "" : "s"}.`;
 }
 
 document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
