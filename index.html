@@ -4,11 +4,19 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Product Portfolio — apps, tools &amp; games</title>
-<meta name="description" content="A portfolio of free web apps, developer tools and browser games — an AI contract reviewer, a plain-language document explainer, an offline first-aid guide and more. All free, no signup." />
+<meta name="description" content="Sixteen free web apps, developer tools and browser games — an AI contract reviewer, a plain-language document explainer, an offline first-aid guide, a milk delivery tracker and more. All free, no signup." />
 <meta name="color-scheme" content="light dark" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0b0c0f" media="(prefers-color-scheme: dark)" />
+<link rel="canonical" href="https://rahulatrkm.github.io/portfolio/" />
 <meta property="og:title" content="Product Portfolio — apps, tools &amp; games" />
-<meta property="og:description" content="Free web apps, developer tools and games. All free, no signup, nothing stored." />
+<meta property="og:description" content="Sixteen free web apps, developer tools and games. All free, no signup, nothing stored." />
 <meta property="og:type" content="website" />
+<meta property="og:url" content="https://rahulatrkm.github.io/portfolio/" />
+<meta property="og:image" content="https://rahulatrkm.github.io/portfolio/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111827'/><path d='M9 21V11h4.2a3.4 3.4 0 010 6.8H9' stroke='white' stroke-width='2.2' fill='none' stroke-linecap='round'/></svg>" />
 <style>
   :root{
@@ -128,7 +136,7 @@
 
 <div class="wrap">
   <header>
-    <p class="eyebrow"><span class="dot"></span>Independent software · everything free</p>
+    <p class="eyebrow"><span class="dot"></span>Independent software · 16 products · everything free</p>
     <h1>Small tools, built properly.</h1>
     <p class="lede">A collection of free web apps, developer tools and browser games. No accounts, no tracking, nothing stored — open one and it just works.</p>
     <div class="meta">
@@ -179,6 +187,9 @@ const ICON = {
   mic:'<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/>',
   wallet:'<path d="M3 7a2 2 0 012-2h13a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M16 12h3"/><path d="M3 9h18"/>',
   shield:'<path d="M12 3l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6z"/><path d="M9.5 12.5l1.8 1.8 3.5-3.6"/>',
+  bottle:'<path d="M9 3h6v3l2 5v10a2 2 0 01-2 2H9a2 2 0 01-2-2V11l2-5z"/><path d="M7.5 13h9"/>',
+  tiles:'<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><path d="M13.5 17h7M17 13.5v7"/>',
+  prism:'<path d="M12 4L4 18h16z"/><path d="M1.5 13h3M19.5 13h3"/>',
 };
 
 const PROJECTS = [
@@ -209,18 +220,27 @@ const PROJECTS = [
   { name:"Recur", icon:"wallet", cat:"util", tag:"Money",
     desc:"See what your subscriptions really cost per year, what renews next, and which ones quietly drain the most. Everything stays on your device.",
     url:"https://rahulatrkm.github.io/recur/", src:"https://github.com/rahulatrkm/recur" },
+  { name:"Milkbook", icon:"bottle", cat:"util", tag:"Home", featured:true,
+    desc:"A daily milk delivery register. One tap a day, an exact monthly bill to send your vendor, family sync by code, and it subscribes to your phone calendar.",
+    url:"https://rahulatrkm.github.io/milkbook/", src:"https://github.com/rahulatrkm/milkbook" },
   { name:"Voxelia", icon:"cube", cat:"game", tag:"3D",
     desc:"A voxel sandbox in the browser — mine and place textured blocks, survive with health and hunger, fight mobs at night, craft and build.",
     url:"https://rahulatrkm.github.io/voxelia/", src:"https://github.com/rahulatrkm/voxelia" },
   { name:"Bloom", icon:"spark", cat:"game", tag:"Casual",
-    desc:"One tap sets off a cascade of light. A chain-reaction game where every orb colour chains differently.",
+    desc:"One tap sets off a cascade of light. Time a single bloom to chain as many drifting orbs as you can, through levels that get tighter as you go.",
     url:"https://rahulatrkm.github.io/bloom/", src:"https://github.com/rahulatrkm/bloom" },
   { name:"Tiger", icon:"paw", cat:"game", tag:"Simulation",
     desc:"Survive as a tiger in a living jungle — roam the wild and a village, manage hunger, stalk prey and hunt.",
     url:"https://rahulatrkm.github.io/tiger/", src:"https://github.com/rahulatrkm/tiger" },
-  { name:"Faint", icon:"palette", cat:"game", tag:"Daily",
-    desc:"The daily colour-perception game. One tile is a faintly different shade — find it. It gets harder every round.",
+  { name:"Faint", icon:"palette", cat:"game", tag:"Daily", featured:true,
+    desc:"The daily colour-perception game. One tile is a faintly different shade — find it before the timer runs out. Same board for everyone, every day.",
     url:"https://rahulatrkm.github.io/faint/", src:"https://github.com/rahulatrkm/faint" },
+  { name:"Fuse", icon:"tiles", cat:"game", tag:"Puzzle",
+    desc:"A merge puzzle done properly. Slide the tiles, fuse the numbers and chase 2048 and beyond, with themes, undo, a daily challenge and time attack.",
+    url:"https://rahulatrkm.github.io/fuse/", src:"https://github.com/rahulatrkm/fuse" },
+  { name:"Prism", icon:"prism", cat:"game", tag:"Puzzle",
+    desc:"A calm light puzzle. Rotate mirrors to bend a beam through hand-crafted levels and ignite every crystal. One-thumb play, no timer, no pressure.",
+    url:"https://rahulatrkm.github.io/prism/", src:"https://github.com/rahulatrkm/prism" },
 ];
 
 const grid = document.getElementById("grid");
