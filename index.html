@@ -75,7 +75,8 @@
 
   <main id="projects">
     <div class="filters" role="group" aria-label="Filter projects by category" id="filters">
-      <button class="chip" data-f="all" aria-pressed="true">All</button>
+      <button class="chip" data-f="featured" aria-pressed="true">Featured</button>
+      <button class="chip" data-f="all" aria-pressed="false">All</button>
       <button class="chip" data-f="ai" aria-pressed="false">AI</button>
       <button class="chip" data-f="tool" aria-pressed="false">Developer tools</button>
       <button class="chip" data-f="util" aria-pressed="false">Everyday</button>
@@ -101,15 +102,15 @@ const PROJECTS = [
     url:"https://clauseclear.onrender.com", src:"https://github.com/rahulatrkm/clauseclear" },
   { name:"Plainly", emoji:"🔤", cat:"ai", tag:"AI · Everyday",
     desc:"Turn any confusing document or jargon — medical, legal, bank, government — into plain words at your reading level and language. Plus a scam/reality checker.",
-    url:"https://plainly-n6ni.onrender.com", src:"https://github.com/rahulatrkm/plainly" },  { name:"ResumeFit", emoji:"📋", cat:"ai", tag:"AI · Careers",
+    url:"https://plainly-n6ni.onrender.com", src:"https://github.com/rahulatrkm/plainly" },  { name:"ResumeFit", emoji:"📋", cat:"ai", tag:"AI · Careers", featured:true,
     desc:"Upload your CV and paste a job ad to get an honest match score, the keywords you're missing, screening issues, and stronger rewrites of your bullet points.",
     url:"https://rahulatrkm.github.io/resumefit/", src:"https://github.com/rahulatrkm/resumefit" },
-  { name:"Rehearsal", emoji:"🎤", cat:"ai", tag:"AI · Careers",
-    desc:"A mock interview that talks back — answer out loud or by typing, get scored every turn, face real follow-ups, and finish with an honest debrief.",
+  { name:"Rehearsal", emoji:"🎤", cat:"ai", tag:"AI · Careers", featured:true,
+    desc:"Free mock interviews, no signup — answer out loud or by typing, get scored every turn, face real follow-ups, and finish with an honest debrief.",
     url:"https://rahulatrkm.github.io/rehearsal/", src:"https://github.com/rahulatrkm/rehearsal" },
   { name:"Recur", emoji:"💸", cat:"util", tag:"Money · Private",
     desc:"See what your subscriptions really cost per year, what renews next, and which ones quietly drain the most. Everything stays on your device.",
-    url:"https://rahulatrkm.github.io/recur/", src:"https://github.com/rahulatrkm/recur" },  { name:"Lifeline", emoji:"✚", cat:"util", tag:"Health · Offline",
+    url:"https://rahulatrkm.github.io/recur/", src:"https://github.com/rahulatrkm/recur" },  { name:"Lifeline", emoji:"✚", cat:"util", tag:"Health · Offline", featured:true,
     desc:"Calm, offline first-aid & emergency steps — choking, CPR, bleeding, stroke and more. Works with no internet. Installable on your phone.",
     url:"https://rahulatrkm.github.io/lifeline/", src:"https://github.com/rahulatrkm/lifeline" },
   { name:"OGCheck", emoji:"🔗", cat:"tool", tag:"Dev tool · SEO",
@@ -139,9 +140,10 @@ const grid = document.getElementById("grid");
 const countEl = document.getElementById("count");
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
-function render(filter="all"){
+function render(filter="featured"){
   grid.innerHTML="";
-  const items = PROJECTS.filter(p => filter==="all" || p.cat===filter);
+  const items = PROJECTS.filter(p =>
+    filter==="all" ? true : filter==="featured" ? p.featured : p.cat===filter);
   for(const p of items){
     const li=document.createElement("li"); li.className="card";
     li.innerHTML = `
