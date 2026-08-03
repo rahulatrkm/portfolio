@@ -100,18 +100,30 @@ def _salt(conn: sqlite3.Connection) -> str:
 
 
 def _seed_if_empty(conn: sqlite3.Connection) -> None:
-    if conn.execute("SELECT 1 FROM likes LIMIT 1").fetchone():
-        return
+    """Render's free tier has no persistent disk, so the database is wiped on every
+    deploy and every spin-down. seed.json is the last snapshot taken before a
+    deploy; without it, all history silently resets to zero and the numbers on the
+    site mean "since the last push" rather than "ever"."""
     if conn.execute("SELECT 1 FROM meta WHERE k='seeded'").fetchone():
+        return
+    if conn.execute("SELECT 1 FROM likes LIMIT 1").fetchone():
         return
     conn.execute("INSERT OR REPLACE INTO meta(k, v) VALUES('seeded', '1')")
     try:
         data = json.loads(SEED_PATH.read_text())
     except (OSError, json.JSONDecodeError):
         return
-    for product, n in data.items():
+    # the original format was a flat product -> likes map; keep reading it
+    likes = data.get("likes", data) if isinstance(data, dict) else {}
+    views = data.get("views", {}) if isinstance(data, dict) else {}
+    for product, n in likes.items():
         if product in PRODUCTS and isinstance(n, int) and n >= 0:
             conn.execute("INSERT OR REPLACE INTO likes(product, n) VALUES(?, ?)", (product, n))
+    # restored views land on one synthetic day so the 120-day trim keeps them
+    for product, n in views.items():
+        if product in COUNTABLE and isinstance(n, int) and n > 0:
+            conn.execute("INSERT OR REPLACE INTO views(product, day, n) VALUES(?, 'restored', ?)",
+                         (product, n))
 
 
 def counts() -> dict[str, int]:
