@@ -183,6 +183,7 @@ def add_view(product: str, ip: str, ref_host: str = "") -> None:
     """Counts a page view. The address is hashed with a rotating salt and never stored."""
     today = date.today().isoformat()
     with _db() as conn:
+        _seed_if_empty(conn)
         salt = _salt(conn)
         conn.execute("INSERT INTO views(product, day, n) VALUES(?, ?, 1) "
                      "ON CONFLICT(product, day) DO UPDATE SET n = n + 1", (product, today))
@@ -201,6 +202,7 @@ def add_view(product: str, ip: str, ref_host: str = "") -> None:
 def view_stats() -> dict:
     today = date.today().isoformat()
     with _db() as conn:
+        _seed_if_empty(conn)
         totals = dict(conn.execute("SELECT product, SUM(n) FROM views GROUP BY product").fetchall())
         todays = dict(conn.execute("SELECT product, n FROM views WHERE day = ?", (today,)).fetchall())
         uniq = conn.execute("SELECT COUNT(*) FROM seen WHERE day = ?", (today,)).fetchone()[0]

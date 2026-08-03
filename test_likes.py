@@ -222,5 +222,61 @@ call("POST", "/api/view/lifeline", qs="r=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2
 ok("a referrer sent as a full URL is reduced to its host",
    A.view_stats()["referrers"] == {"linkedin.com": 1}, str(A.view_stats()["referrers"]))
 
+# ------------------------------------------------------------------- restore
+# Render's free tier has no persistent disk, so deploying wipes this database.
+# seed.json is the only thing standing between a deploy and losing every number.
+# That path sat unexercised for months while nothing ever wrote the file, so all
+# history quietly reset on each push. Exercise it here.
+print("\nSEED — surviving a deploy")
+
+import sqlite3  # noqa: E402
+
+
+def fresh_db(seed: dict | None) -> None:
+    """Point the app at an empty database, with seed.json as given."""
+    A.DB_PATH = os.path.join(tempfile.mkdtemp(), "likes.db")
+    if seed is None:
+        A.SEED_PATH = Path(tempfile.mkdtemp()) / "missing.json"
+    else:
+        A.SEED_PATH = Path(tempfile.mkdtemp()) / "seed.json"
+        A.SEED_PATH.write_text(json.dumps(seed))
+
+
+_real_db, _real_seed = A.DB_PATH, A.SEED_PATH
+
+fresh_db({"likes": {"faint": 7}, "views": {"tiger": 42}})
+ok("likes survive a wipe", A.counts().get("faint") == 7, str(A.counts()))
+ok("views survive a wipe", A.view_stats()["products"]["tiger"]["total"] == 42,
+   str(A.view_stats()["products"]["tiger"]))
+ok("restored views are not counted as today's traffic",
+   A.view_stats()["products"]["tiger"]["today"] == 0)
+
+fresh_db({"likes": {"faint": 7}, "views": {"tiger": 42}})
+A.add_view("tiger", "1.1.1.1", "")
+ok("new views add on top of restored ones",
+   A.view_stats()["products"]["tiger"]["total"] == 43,
+   str(A.view_stats()["products"]["tiger"]))
+
+fresh_db({"faint": 5})
+ok("the original flat seed format is still read", A.counts().get("faint") == 5, str(A.counts()))
+
+fresh_db({"likes": {"nosuchproduct": 9, "faint": -3}, "views": {"nosuchproduct": 9}})
+ok("a seed cannot invent products or negative counts",
+   "nosuchproduct" not in A.counts() and A.counts().get("faint") is None, str(A.counts()))
+
+fresh_db(None)
+ok("a missing seed file is survivable", A.counts() == {})
+
+A.DB_PATH, A.SEED_PATH = _real_db, _real_seed
+
+# the file that ships must be readable by the loader that has to read it
+_shipped = json.loads((Path(__file__).resolve().parent / "seed.json").read_text())
+ok("the shipped seed is in a shape the server understands",
+   isinstance(_shipped, dict) and set(_shipped) <= {"likes", "views"},
+   str(sorted(_shipped)))
+ok("the shipped seed only names real products",
+   not (set(_shipped.get("likes", {})) - A.PRODUCTS)
+   and not (set(_shipped.get("views", {})) - A.COUNTABLE))
+
 print(f"\n{PASS} passed, {FAIL} failed\n")
 sys.exit(1 if FAIL else 0)
