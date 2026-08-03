@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Product Portfolio — apps, tools &amp; games</title>
-<meta name="description" content="Sixteen free web apps, developer tools and browser games — a contract reviewer, a plain-language explainer, an offline first-aid guide and more." />
+<meta name="description" content="Eighteen free web apps, developer tools and browser games — a contract reviewer, a plain-language explainer, an offline first-aid guide and more." />
 <meta name="color-scheme" content="light dark" />
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#0b0c0f" media="(prefers-color-scheme: dark)" />
 <link rel="canonical" href="https://rahulatrkm.github.io/portfolio/" />
 <meta property="og:title" content="Product Portfolio — apps, tools &amp; games" />
-<meta property="og:description" content="Sixteen free web apps, developer tools and games. All free, no signup, nothing stored." />
+<meta property="og:description" content="Eighteen free web apps, developer tools and games. All free, no signup, nothing stored." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://rahulatrkm.github.io/portfolio/" />
 <meta property="og:image" content="https://rahulatrkm.github.io/portfolio/og.png" />
@@ -151,7 +151,7 @@
   "@type": "SoftwareApplication",
   "name": "Product Portfolio",
   "url": "https://rahulatrkm.github.io/portfolio/",
-  "description": "Sixteen free web apps, developer tools and browser games \u2014 a contract reviewer, a plain-language explainer, an offline first-aid guide and more.",
+  "description": "Eighteen free web apps, developer tools and browser games \u2014 a contract reviewer, a plain-language explainer, an offline first-aid guide and more.",
   "applicationCategory": "WebApplication",
   "operatingSystem": "Any modern web browser",
   "browserRequirements": "Requires JavaScript",
@@ -174,7 +174,7 @@
 
 <div class="wrap">
   <header>
-    <p class="eyebrow"><span class="dot"></span>Independent software · 16 products · everything free</p>
+    <p class="eyebrow"><span class="dot"></span>Independent software · 18 products · everything free</p>
     <h1>Small tools, built properly.</h1>
     <p class="lede">A collection of free web apps, developer tools and browser games. No accounts, no tracking, nothing stored — open one and it just works.</p>
     <div class="meta">
@@ -230,6 +230,8 @@ const ICON = {
   bottle:'<path d="M9 3h6v3l2 5v10a2 2 0 01-2 2H9a2 2 0 01-2-2V11l2-5z"/><path d="M7.5 13h9"/>',
   tiles:'<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><path d="M13.5 17h7M17 13.5v7"/>',
   prism:'<path d="M12 4L4 18h16z"/><path d="M1.5 13h3M19.5 13h3"/>',
+  sprout:'<path d="M12 21v-8"/><path d="M12 13c0-3.3-2.7-6-6-6 0 3.3 2.7 6 6 6z"/><path d="M12 13c0-3.9 3.1-7 7-7 0 3.9-3.1 7-7 7z"/><path d="M6 21h12"/>',
+  graph:'<circle cx="5" cy="6" r="2.5"/><circle cx="19" cy="12" r="2.5"/><circle cx="5" cy="18" r="2.5"/><path d="M7.5 6.8l9 4.2M7.5 17.2l9-4.2"/>',
 };
 
 const PROJECTS = [
@@ -281,6 +283,12 @@ const PROJECTS = [
   { name:"Prism", icon:"prism", cat:"game", tag:"Puzzle",
     desc:"A calm light puzzle. Turn mirrors to bend a beam through 240 hand-checked levels and ignite every crystal. No timer, no pressure.",
     url:"https://rahulatrkm.github.io/prism/", src:"https://github.com/rahulatrkm/prism" },
+  { name:"Junction", icon:"graph", cat:"tool", tag:"Developer", featured:true,
+    desc:"Build an AI pipeline as a graph instead of a thousand lines of glue. Write YAML or drag the boxes \u2014 they are the same thing. Run it on your own key, then export plain Python that needs nothing from me.",
+    url:"https://rahulatrkm.github.io/junction/", src:"https://github.com/rahulatrkm/junction" },
+  { name:"Acre", icon:"sprout", cat:"game", tag:"Tycoon",
+    desc:"A farm tycoon that keeps growing while you are away. Plant and harvest, raise animals, run a mill and a bakery, and work through 24 levels. No downloads, no timers to buy past.",
+    url:"https://rahulatrkm.github.io/acre/", src:"https://github.com/rahulatrkm/acre" },
 ];
 
 const grid = document.getElementById("grid");
