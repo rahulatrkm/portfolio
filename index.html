@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Product Portfolio — apps, tools &amp; games</title>
-<meta name="description" content="Nineteen free web apps, developer tools and browser games — a contract reviewer, a plain-language explainer, an offline first-aid guide and more." />
+<meta name="description" content="Twenty free web apps, developer tools and browser games — a contract reviewer, a plain-language explainer, an offline first-aid guide and more." />
 <meta name="color-scheme" content="light dark" />
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#0b0c0f" media="(prefers-color-scheme: dark)" />
 <link rel="canonical" href="https://rahulatrkm.github.io/portfolio/" />
 <meta property="og:title" content="Product Portfolio — apps, tools &amp; games" />
-<meta property="og:description" content="Nineteen free web apps, developer tools and games. All free, no signup, nothing stored." />
+<meta property="og:description" content="Twenty free web apps, developer tools and games. All free, no signup, nothing stored." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://rahulatrkm.github.io/portfolio/" />
 <meta property="og:image" content="https://rahulatrkm.github.io/portfolio/og.png" />
@@ -76,6 +76,7 @@
 
   /* ---------- filters ---------- */
   nav.filters{
+    position:relative;
     display:flex; gap:4px; flex-wrap:wrap; margin:56px 0 24px;
     border-bottom:1px solid var(--line); padding-bottom:0;
   }
@@ -85,7 +86,18 @@
     padding:10px 14px; border-bottom:2px solid transparent; margin-bottom:-1px; transition:.15s;
   }
   .chip:hover{color:var(--text)}
-  .chip[aria-pressed="true"]{color:var(--text); border-bottom-color:var(--accent)}
+  .chip[aria-pressed="true"]{color:var(--text)}
+  /* One underline that slides between tabs rather than an unrelated line
+     appearing under each. The movement is the thing that says these are the
+     same control in different positions. It is placed from the top and moved on
+     both axes, because this row wraps on a narrow screen and an underline that
+     only tracked the horizontal offset ended up beneath the wrong tab. */
+  .ink{
+    position:absolute; top:0; left:0; height:2px; background:var(--accent);
+    border-radius:2px; transition:transform .28s cubic-bezier(.4,0,.2,1), width .28s cubic-bezier(.4,0,.2,1);
+    pointer-events:none;
+  }
+  .ink[hidden]{display:none}
 
   /* ---------- cards ---------- */
   .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; list-style:none; padding:0}
@@ -131,7 +143,10 @@
     transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
   .like[aria-pressed="true"]{color:#dc2657; border-color:currentColor; background:rgba(220,38,87,.08)}
   .like[aria-pressed="true"] svg{fill:currentColor}
-  .like .n{font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+  .like .n{font-variant-numeric:tabular-nums; letter-spacing:-.01em;
+    /* The counts arrive from the network after first paint. Without a floor the
+       button grows as each number lands and the whole row twitches. */
+    min-width:1ch; display:inline-block; text-align:left}
   .like.pulse svg{animation:likepop .36s cubic-bezier(.34,1.56,.64,1)}
   @keyframes likepop{40%{transform:scale(1.45)}}
 
@@ -142,7 +157,22 @@
   .note{margin-top:8px; color:var(--text-3)}
 
   .sr{position:absolute!important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
-  @media (prefers-reduced-motion: reduce){ *{transition:none!important} .card:hover{transform:none} }
+
+  /* Cards arrive rather than blink into place, so switching filters reads as
+     "here is the set that matched" instead of "the page reloaded". The stagger
+     is capped so a twenty-item list is not slower to read than a three-item one. */
+  @media (prefers-reduced-motion: no-preference){
+    .grid.enter > .card{animation:cardin .34s cubic-bezier(.2,.7,.3,1) backwards;
+      animation-delay:calc(var(--i) * 22ms)}
+    @keyframes cardin{from{opacity:0; transform:translateY(8px)}}
+  }
+
+  /* The old rule turned off transitions but not animations, so the like pop and
+     anything else keyframed still ran for someone who had asked for stillness. */
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none!important; animation:none!important; scroll-behavior:auto!important}
+    .card:hover{transform:none}
+  }
   @media (max-width:600px){ header{padding-top:52px} nav.filters{margin-top:40px} }
 </style>
 <script type="application/ld+json">
@@ -151,7 +181,7 @@
   "@type": "SoftwareApplication",
   "name": "Product Portfolio",
   "url": "https://rahulatrkm.github.io/portfolio/",
-  "description": "Nineteen free web apps, developer tools and browser games \u2014 a contract reviewer, a plain-language explainer, an offline first-aid guide and more.",
+  "description": "Twenty free web apps, developer tools and browser games \u2014 a contract reviewer, a plain-language explainer, an offline first-aid guide and more.",
   "applicationCategory": "WebApplication",
   "operatingSystem": "Any modern web browser",
   "browserRequirements": "Requires JavaScript",
@@ -174,7 +204,7 @@
 
 <div class="wrap">
   <header>
-    <p class="eyebrow"><span class="dot"></span>Independent software · 19 products · everything free</p>
+    <p class="eyebrow"><span class="dot"></span>Independent software · <span id="n">19</span> products · everything free</p>
     <h1>Small tools, built properly.</h1>
     <p class="lede">A collection of free web apps, developer tools and browser games. No accounts, no tracking, nothing stored — open one and it just works.</p>
     <div class="meta">
@@ -198,6 +228,7 @@
       <button class="chip" data-f="tool" aria-pressed="false">Developer</button>
       <button class="chip" data-f="util" aria-pressed="false">Everyday</button>
       <button class="chip" data-f="game" aria-pressed="false">Games</button>
+      <span class="ink" aria-hidden="true" hidden></span>
     </nav>
     <ul class="grid" id="grid"></ul>
     <p id="count" class="sr" role="status" aria-live="polite"></p>
@@ -263,6 +294,9 @@ const PROJECTS = [
   { name:"Recur", icon:"wallet", cat:"util", tag:"Money",
     desc:"See what your subscriptions really cost per year, what renews next, and which ones quietly drain the most. Everything stays on your device.",
     url:"https://rahulatrkm.github.io/recur/", src:"https://github.com/rahulatrkm/recur" },
+  { name:"Sift", icon:"receipt", cat:"util", tag:"Money", featured:true,
+    desc:"Drop in a bank or card statement and find the subscriptions you forgot about \u2014 what they cost a year, what went up, what already stopped. Read in your browser; nothing is uploaded.",
+    url:"https://rahulatrkm.github.io/sift/", src:"https://github.com/rahulatrkm/sift" },
   { name:"Milkbook", icon:"bottle", cat:"util", tag:"Home", featured:true,
     desc:"A daily milk delivery register. One tap a day, an exact monthly bill to send your vendor, family sync by code, and it subscribes to your phone calendar.",
     url:"https://rahulatrkm.github.io/milkbook/", src:"https://github.com/rahulatrkm/milkbook" },
@@ -365,8 +399,8 @@ function render(filter="featured"){
                                       || a.name.localeCompare(b.name))
     : PROJECTS.filter(p =>
         filter === "all" ? true : filter === "featured" ? p.featured : p.cat === filter);
-  grid.innerHTML = items.map(p => `
-    <li class="card">
+  grid.innerHTML = items.map((p, i) => `
+    <li class="card" style="--i:${Math.min(i, 12)}">
       <div class="head">
         <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${ICON[p.icon]||""}</svg></span>
         <div>
@@ -389,15 +423,42 @@ function render(filter="featured"){
       </div>
     </li>`).join("");
   countEl.textContent = `Showing ${items.length} project${items.length === 1 ? "" : "s"}.`;
+  // Restart the entrance so a filter change is visibly a new set arriving.
+  grid.classList.remove("enter");
+  void grid.offsetWidth;
+  grid.classList.add("enter");
   paintLikes();
+}
+
+/* The underline is positioned from the tab it belongs to rather than hard-coded,
+   so it stays right when the labels change or the row wraps onto a second line. */
+const ink = document.querySelector(".ink");
+function moveInk(chip){
+  if(!ink || !chip) return;
+  const nav = chip.parentElement.getBoundingClientRect();
+  const box = chip.getBoundingClientRect();
+  ink.hidden = false;
+  ink.style.width = `${box.width}px`;
+  ink.style.transform = `translate(${box.left - nav.left}px, ${box.bottom - nav.top - 2}px)`;
 }
 
 document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
   document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", "false"));
   c.setAttribute("aria-pressed", "true");
+  moveInk(c);
   render(c.dataset.f);
 }));
+
+const activeChip = () => document.querySelector('.chip[aria-pressed="true"]');
+addEventListener("resize", () => moveInk(activeChip()));
+// Web fonts land after first paint and change how wide a tab is.
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(() => moveInk(activeChip()));
+
 render();
+moveInk(activeChip());
+// Counted from the list rather than typed into the markup, which is how it came
+// to say nineteen when there were twenty.
+document.getElementById("n").textContent = PROJECTS.length;
 loadLikes();
 </script>
 <script data-count="portfolio">

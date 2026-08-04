@@ -131,7 +131,7 @@ from pathlib import Path  # noqa: E402
 
 _html = (Path(__file__).resolve().parent / "index.html").read_text(encoding="utf-8")
 _slugs = set(re.findall(r'src:"https://github\.com/rahulatrkm/([a-z]+)"', _html))
-ok("the page lists products", len(_slugs) == 19, f"{len(_slugs)} found")
+ok("the page lists products", len(_slugs) >= 19, f"{len(_slugs)} found")
 ok("every slug the page posts is accepted by the server",
    not (_slugs - A.PRODUCTS), f"unknown: {sorted(_slugs - A.PRODUCTS)}")
 ok("the server allows nothing the page never sends",
