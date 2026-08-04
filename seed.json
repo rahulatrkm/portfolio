@@ -3,6 +3,9 @@
   "views": {
     "acre": 1,
     "junction": 2,
-    "portfolio": 1
+    "portfolio": 1,
+    "quire": 1,
+    "resumefit": 1,
+    "voxelia": 1
   }
 }

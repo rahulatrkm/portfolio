@@ -278,5 +278,40 @@ ok("the shipped seed only names real products",
    not (set(_shipped.get("likes", {})) - A.PRODUCTS)
    and not (set(_shipped.get("views", {})) - A.COUNTABLE))
 
+# ---- who the rate limiter thinks you are -----------------------------------
+# The service sits behind Render, so REMOTE_ADDR is the proxy and every caller
+# would share one bucket. The obvious repair is to trust X-Forwarded-For, but
+# the caller sends that header and the proxy only appends to it: reading the
+# first entry meant anyone could put a new value on each request, land in a
+# fresh bucket and never be limited at all. Only the last hop is written by the
+# proxy, and only that one cannot be chosen by the caller.
+_tries = A.RATE_LIMIT + 10
+
+A._hits.clear()
+_spoofed = sum(
+    1 for i in range(_tries)
+    if call("POST", "/api/likes/faint", ip="10.0.0.1",
+            extra={"HTTP_X_FORWARDED_FOR": f"1.2.3.{i}, 203.0.113.9"})[0] == 429
+)
+ok("a caller cannot escape the limit by changing X-Forwarded-For",
+   _spoofed > 0, f"{_spoofed} of {_tries} requests were limited")
+
+A._hits.clear()
+_shared = sum(
+    1 for i in range(_tries)
+    if call("POST", "/api/likes/faint", ip="10.0.0.1",
+            extra={"HTTP_X_FORWARDED_FOR": f"198.51.100.{i}"})[0] == 429
+)
+ok("and genuinely different callers are not lumped into one bucket",
+   _shared == 0, f"{_shared} of {_tries} distinct callers were wrongly limited")
+
+A._hits.clear()
+_direct = sum(
+    1 for _ in range(_tries)
+    if call("POST", "/api/likes/faint", ip="203.0.113.7")[0] == 429
+)
+ok("with no proxy header the direct address is still limited",
+   _direct > 0, f"{_direct} of {_tries} limited")
+
 print(f"\n{PASS} passed, {FAIL} failed\n")
 sys.exit(1 if FAIL else 0)

@@ -263,7 +263,10 @@ def app(environ, start_response):
     path = environ.get("PATH_INFO", "/")
     method = environ.get("REQUEST_METHOD", "GET").upper()
     cors = _cors(environ.get("HTTP_ORIGIN"))
-    ip = (environ.get("HTTP_X_FORWARDED_FOR", "").split(",")[0].strip()
+    # The last hop is the one the proxy in front of us wrote. The first is
+    # whatever the caller chose to send, so limiting on it meant anyone could
+    # land in a fresh bucket every request and never be limited at all.
+    ip = (environ.get("HTTP_X_FORWARDED_FOR", "").split(",")[-1].strip()
           or environ.get("REMOTE_ADDR", "?"))
 
     if method == "OPTIONS":
