@@ -47,7 +47,7 @@ SEED_PATH = HERE / "seed.json"
 PRODUCTS = frozenset({
     "rehearsal", "resumefit", "lifeline", "clauseclear", "plainly", "ogcheck",
     "invoicepdf", "metascrub", "recur", "milkbook", "voxelia", "bloom",
-    "tiger", "faint", "fuse", "prism", "junction", "acre",
+    "tiger", "faint", "fuse", "prism", "junction", "acre", "quire",
 })
 # the portfolio itself has no like button, but its traffic is the thing a post drives
 COUNTABLE = PRODUCTS | frozenset({"portfolio"})
