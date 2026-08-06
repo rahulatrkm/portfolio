@@ -3,9 +3,11 @@
   "views": {
     "acre": 1,
     "junction": 2,
-    "portfolio": 9,
-    "quire": 1,
+    "milkbook": 110,
+    "portfolio": 13,
+    "quire": 4,
     "resumefit": 1,
+    "sift": 7,
     "voxelia": 1
   }
 }
